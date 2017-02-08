@@ -5,33 +5,44 @@ import java.awt.Graphics2D;
 
 class Snake {
 
-    private int x = 50, y = 50, ctr = 1;
+    private int x, y, ctr;
     private double
             xVel,
             yVel,
-            maxVel = 5,
-            turnSpeed = maxVel / 30,
+            turnSpeed,
             velVector;
-    private int screenWidth, screenHeight, foodDiameter;
-    private int beadDiameter = 30;
-    private int beadCount = 1;
+    private int screenWidth, screenHeight, foodDiameter, beadCount, prevFoodX, prevFoodY;
+    private final int beadDiameter = 30,  maxVel = 6;
+    private double score;
     private int[][] board;
     private Field field;
 
     Snake(Field field) {
+
         this.field = field;
 
         screenWidth = SnakeGame.screenWidth;
         screenHeight = SnakeGame.screenHeight;
         foodDiameter = Field.foodDiameter;
 
+        score = 0;
+        beadCount = 1;
+
+        ctr = 1;
+
         board = new int[screenWidth][screenHeight];
         board[x][y] = ctr;
         ctr++;
 
+        x = (int)(Math.random() * (screenWidth - 2 * beadDiameter)) + beadDiameter;
+        y = (int)(Math.random() * (screenHeight - 2 * beadDiameter)) + beadDiameter;
+
+        turnSpeed = (double)maxVel / 20;
         xVel = Math.random() * maxVel;
         yVel = maxVel - xVel;
 
+        prevFoodX = x;
+        prevFoodY = y;
     }
 
     private int distBetween (int x1, int y1, int x2, int y2) {
@@ -44,6 +55,9 @@ class Snake {
 
         if (distBetween(x, y, foodX, foodY) <= (beadDiameter + foodDiameter) / 2) {
             beadCount++;
+            score += distBetween(prevFoodX, prevFoodY, foodX, foodY);
+            prevFoodX = foodX;
+            prevFoodY = foodY;
             field.spawnFood();
         }
     }
@@ -140,6 +154,10 @@ class Snake {
 
         checkFoodConsumed();
 
+    }
+
+    double getScore() {
+        return score / 100;
     }
 
     void paint(Graphics2D g) {
