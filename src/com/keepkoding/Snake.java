@@ -11,8 +11,8 @@ class Snake {
             yVel,
             turnSpeed,
             velVector;
-    private int screenWidth, screenHeight, foodDiameter, beadCount, prevFoodX, prevFoodY;
-    private final int beadDiameter = 30,  maxVel = 6;
+    private int screenWidth, screenHeight, foodDiameter, beadCount, prevFoodX, prevFoodY, maxVel;
+    private final int beadDiameter = 30;
     private double score;
     private int[][] board;
     private Field field;
@@ -27,6 +27,8 @@ class Snake {
 
         score = 0;
         beadCount = 1;
+
+        maxVel = 6;
 
         ctr = 1;
 
@@ -55,7 +57,13 @@ class Snake {
 
         if (distBetween(x, y, foodX, foodY) <= (beadDiameter + foodDiameter) / 2) {
             beadCount++;
+            maxVel += 1;
+            turnSpeed = (double)maxVel / 20;
+
             score += distBetween(prevFoodX, prevFoodY, foodX, foodY);
+            score += maxVel * 50;
+
+            field.setGameTime(field.getGameTime() + 1);
             prevFoodX = foodX;
             prevFoodY = foodY;
             field.spawnFood();
