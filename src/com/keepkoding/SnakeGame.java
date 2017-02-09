@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+// The main class that handles the high-end things.
 public class SnakeGame extends JPanel {
 
     // Stores screen size.
@@ -56,7 +56,7 @@ public class SnakeGame extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         // Painting field and snake
-        field.paintField(g2d);
+        field.paintFood(g2d);
         snake.paint(g2d);
         // Adding score and timer
         field.paintScore(g2d, snake.getScore());
@@ -72,6 +72,7 @@ public class SnakeGame extends JPanel {
     }
 
     public static void main(String[] args) {
+        // Creates a frame with title "Slithery Snake"
         JFrame frame = new JFrame("Slithery Snake");
         // Creating SnakeGame
         SnakeGame game = new SnakeGame();
